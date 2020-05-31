@@ -4,7 +4,7 @@ function onCreate() {
     createConnectionMatrix(count, matrixElement);
 
     var weights = document.getElementById('weights');
-    createWeightsmatrix(count, weights);
+    createWeightsmatrix(count, weights,[]);
   };
 
   function onCreate2(){
@@ -13,7 +13,7 @@ function onCreate() {
     createConnectionMatrix(count, matrixElement);
   }
 
-  function createWeightsmatrix(count, matrixElement)
+  function createWeightsmatrix(count, matrixElement, sorting)
     {
         for(var i = 0; i < 1 + 1; i++) {
             var tr = document.createElement('tr');
@@ -32,6 +32,10 @@ function onCreate() {
                   {
                     element.value = j + 1;
                   }
+              }
+              else
+              {
+                element.value = sorting[j];
               }
       
               td.appendChild(element);
@@ -134,10 +138,19 @@ function onCreate() {
     
     allocayionReques.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-    allocayionReques.onload = function(reaponse)
-    {
+    allocayionReques.onreadystatechange = function() {
+      if (allocayionReques.readyState == XMLHttpRequest.DONE) 
+      {
+          alert(allocayionReques.responseText);
+          var result =   allocayionReques.responseText;
+          var allocation = JSON.parse(result);
+          var n = allocation.jobSorting.length;
+          var sortingMatrix = document.getElementById("jobSorting");
+          createWeightsmatrix(n, sortingMatrix, allocation.jobSorting);
+      }
         console.log("getted");
     };
+
     allocayionReques.onerror = function()
     {
         console.log("error");

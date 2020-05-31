@@ -17,9 +17,9 @@ public class Job
    {
        Children.Add(new Relation(childJob, weight));
    }
-   public long Id{get; private set;}
+   public int Id{get; private set;}
 
-   public Job(long id, long weight)
+   public Job(int id, long weight)
    {
        Parents = new List<Relation>();
        Children = new List<Relation>();

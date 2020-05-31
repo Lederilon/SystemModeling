@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class TaskGraph : IEnumerable<Job>
 {
@@ -13,16 +14,13 @@ public class TaskGraph : IEnumerable<Job>
        return _jobs.Values.GetEnumerator();
     }
 
-    public Job FinishTask {get; private set;}
+    public IEnumerable<Job> FinishTasks => _jobs.Values.Where( j=> !j.Children.Any());
 
     private Dictionary<long, Job> _jobs;
 
-    public TaskGraph(Job finishTask)
+    public TaskGraph()
     {
         _jobs = new Dictionary<long, Job>();
-
-        FinishTask = finishTask;
-        _jobs[FinishTask.Id] = finishTask;
     }
 
     public void AddTask(Job job)

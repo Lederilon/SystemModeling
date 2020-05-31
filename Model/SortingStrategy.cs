@@ -18,7 +18,10 @@ public class CriticalPathByTime : IJobSorter
     {
         var taskOrder = new List<Job>();
         var order = new SortedList<long, Job>(new DuplicateKeyComparer<long>());
-        fillCriticalPath(graph.FinishTask, 0, order);
+        foreach(var finishTask in graph.FinishTasks)
+        {
+             fillCriticalPath(finishTask, 0, order);
+        }
         return order.Select( kvp => kvp.Value);
     }
 
@@ -26,7 +29,7 @@ public class CriticalPathByTime : IJobSorter
     {
         var addedDepth = job.Weight;
         var totalDepth = addedDepth + depth;
-        foreach(var childJob in job.Children)
+        foreach(var childJob in job.Parents)
         {
             fillCriticalPath(childJob.RelatedJob, totalDepth + childJob.Weight, jobOrder);
         }

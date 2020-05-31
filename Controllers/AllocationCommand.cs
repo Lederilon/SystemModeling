@@ -8,4 +8,11 @@ namespace Controllers
 
         public int[][] ProcessorRelations {get; set;}
     }
+
+    public class AllocationResult
+    {
+        public int[] JobSorting {get; set;}
+
+        public int[][] Allocations {get; set;}
+    }
 }

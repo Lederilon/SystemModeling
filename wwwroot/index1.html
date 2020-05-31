@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Directed Graph Editor</title>
+    <link rel="stylesheet" href="app.css">
+  </head>
+
+  <body>
+    <button onclick="exportJson(this)">Export</button>
+    <button onclick="document.getElementById('file-input').click();">Import</button>
+    <input id="file-input" type="file" name="name" onchange="imp(this)" style="display: none;" />
+  </body>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="app.js"></script>
+</html>

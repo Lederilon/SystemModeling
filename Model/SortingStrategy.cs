@@ -2,7 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CriticalPathByTime
+public interface IJobSorter
+{
+   IEnumerable<Job> GetJobOrder(TaskGraph graph); 
+}
+
+
+public class CriticalPathByTime : IJobSorter
 {
     public CriticalPathByTime()
     {
@@ -22,13 +28,13 @@ public class CriticalPathByTime
         var totalDepth = addedDepth + depth;
         foreach(var childJob in job.Children)
         {
-            fillCriticalPath(job, totalDepth, jobOrder);
+            fillCriticalPath(childJob.RelatedJob, totalDepth + childJob.Weight, jobOrder);
         }
         jobOrder.Add(totalDepth, job);
     }
 }
 
-public class ByWeight
+public class ByWeight : IJobSorter
 {
      public IEnumerable<Job> GetJobOrder(TaskGraph graph)
     {

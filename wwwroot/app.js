@@ -76,6 +76,42 @@ function onCreate() {
       }  
   }
 
+  function createGantChart(n,m , matrixElement, values)
+  {
+    for(var i = 0; i < n + 1; i++) {
+        var tr = document.createElement('tr');
+        for(var j = 0; j < m + 1; j++) {
+          var td = document.createElement('td');
+          var element = document.createElement('input');
+          element.setAttribute("type", "number");
+          element.value = 0;
+          element.width = 5;
+          element.height = 5;
+  
+          if(i == 0 || j ==0)
+          {
+              element.disabled = true;
+              if(i == 0)
+              {
+                element.value = j;
+              }
+              if(j==0)
+              {
+                  element.value = i;
+              }
+          }else
+          {
+            element.value = values[i -1 ][j - 1];
+          }
+  
+          td.appendChild(element);
+          tr.appendChild(td);
+        }
+        matrixElement.appendChild(tr);
+      }  
+  }
+
+
   function getWeights(table)
   {
     var n = table.rows.length
@@ -147,6 +183,15 @@ function onCreate() {
           var n = allocation.jobSorting.length;
           var sortingMatrix = document.getElementById("jobSorting");
           createWeightsmatrix(n, sortingMatrix, allocation.jobSorting);
+
+          var procSortingMatrix = document.getElementById("procSorting");
+          var m = allocation.processorSorting.length;
+          createWeightsmatrix(m, procSortingMatrix, allocation.processorSorting)
+
+          var gantChart = document.getElementById("gant");
+          createGantChart(allocation.allocations.length, allocation.allocations[0].length, gantChart, allocation.allocations);
+
+
       }
         console.log("getted");
     };

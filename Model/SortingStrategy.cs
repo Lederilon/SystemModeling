@@ -18,14 +18,22 @@ public class CriticalPathByTime : IJobSorter
     {
         var taskOrder = new List<Job>();
         var order = new SortedList<long, Job>(new DuplicateKeyComparer<long>());
+        var critPath = new Dictionary<Job, long>();
         foreach(var finishTask in graph.FinishTasks)
         {
-             fillCriticalPath(finishTask, 0, order);
+             fillCriticalPath(finishTask, 0, critPath);
         }
-        return order.Select( kvp => kvp.Value);
+        foreach(var kvp in critPath)
+        {
+            var job = kvp.Key;
+            var crit = kvp.Value;
+            order.Add(crit, job);
+        }
+        
+        return order.Select( kvp => kvp.Value).Reverse();
     }
 
-    private void fillCriticalPath(Job job, long depth, SortedList<long, Job> jobOrder)
+    private void fillCriticalPath(Job job, long depth, Dictionary<Job, long> jobOrder)
     {
         var addedDepth = job.Weight;
         var totalDepth = addedDepth + depth;
@@ -33,7 +41,12 @@ public class CriticalPathByTime : IJobSorter
         {
             fillCriticalPath(childJob.RelatedJob, totalDepth + childJob.Weight, jobOrder);
         }
-        jobOrder.Add(totalDepth, job);
+        var crit = totalDepth;
+        if(jobOrder.TryGetValue(job, out long critPath))
+        {
+            crit = Math.Min(critPath, crit);
+        }
+        jobOrder.Add(job, crit);
     }
 }
 

@@ -6,24 +6,35 @@ public class Job
 
    public List<Relation> Children{get; private set;}
 
-   public long Weight{get; private set;}
+   public int Weight{get; private set;}
 
-   public void AddParent(Job parentJob, long weight)
+   public bool Allocated {get; set;}
+   public void AddParent(Job parentJob, int weight)
    {
        Parents.Add(new Relation(parentJob, weight));
    }
 
-   public void AddChild(Job childJob, long weight)
+   public void AddChild(Job childJob, int weight)
    {
        Children.Add(new Relation(childJob, weight));
    }
    public int Id{get; private set;}
 
-   public Job(int id, long weight)
+   public Job(int id, int weight)
    {
        Parents = new List<Relation>();
        Children = new List<Relation>();
        Id = id;
        Weight = weight;
    }
+
+   public override int GetHashCode()
+   {
+       return Id * 213 + 27;
+   }
+
+    public override bool Equals(object? obj)
+    {
+        return Id == ((Job)obj).Id;
+    }
 }

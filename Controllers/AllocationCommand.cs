@@ -13,6 +13,8 @@ namespace Controllers
     {
         public int[] JobSorting {get; set;}
 
+        public int[] ProcessorSorting{get; set;}
+
         public int[][] Allocations {get; set;}
     }
 }
